@@ -1,0 +1,21 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // 第一版：鎖定固定旅程，後續可擴充角色權限（owner/editor/viewer）
+    function isTargetTrip(tripId) {
+      return tripId == 'korea-family-trip-2026';
+    }
+
+    match /trips/{tripId} {
+      allow read, write: if isSignedIn() && isTargetTrip(tripId);
+
+      match /{subCollection}/{docId} {
+        allow read, write: if isSignedIn() && isTargetTrip(tripId);
+      }
+    }
+  }
+}
