@@ -1,19 +1,10 @@
-import {
-  faBookOpen,
-  faHouse,
-  faListCheck,
-  faTicket,
-  faUsers,
-  faWallet
-} from '@fortawesome/free-solid-svg-icons';
+import { faCalendarDays, faHouse, faListCheck, faWallet } from '@fortawesome/free-solid-svg-icons';
 
-export type AppTab = 'dashboard' | 'bookings' | 'expense' | 'journal' | 'planning' | 'members';
+export type AppTab = 'dashboard' | 'itinerary' | 'budget' | 'prep';
 
 export const navigationItems = [
-  { key: 'dashboard', label: '首頁', icon: faHouse },
-  { key: 'bookings', label: '預訂', icon: faTicket },
-  { key: 'expense', label: '記帳', icon: faWallet },
-  { key: 'journal', label: '日誌', icon: faBookOpen },
-  { key: 'planning', label: '準備', icon: faListCheck },
-  { key: 'members', label: '成員', icon: faUsers }
+  { key: 'dashboard', label: '總覽', icon: faHouse },
+  { key: 'itinerary', label: '行程', icon: faCalendarDays },
+  { key: 'budget', label: '預算', icon: faWallet },
+  { key: 'prep', label: '準備', icon: faListCheck }
 ] as const;

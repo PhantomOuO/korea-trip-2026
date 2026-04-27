@@ -4,12 +4,10 @@ import '../css/app.css';
 import { AppShell } from './components/layout/AppShell';
 import { FloatingActionButton } from './components/ui/FloatingActionButton';
 import type { AppTab } from './constants/navigation';
-import { BookingsPage } from './pages/BookingsPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { ExpensePage } from './pages/ExpensePage';
-import { JournalPage } from './pages/JournalPage';
-import { MembersPage } from './pages/MembersPage';
-import { PlanningPage } from './pages/PlanningPage';
+import { ItineraryPage } from './pages/ItineraryPage';
+import { PrepPage } from './pages/PrepPage';
 
 const App = () => {
   const [tab, setTab] = useState<AppTab>('dashboard');
@@ -22,16 +20,12 @@ const App = () => {
 
   const content = useMemo(() => {
     switch (tab) {
-      case 'bookings':
-        return <BookingsPage />;
-      case 'expense':
+      case 'itinerary':
+        return <ItineraryPage />;
+      case 'budget':
         return <ExpensePage />;
-      case 'journal':
-        return <JournalPage />;
-      case 'planning':
-        return <PlanningPage />;
-      case 'members':
-        return <MembersPage />;
+      case 'prep':
+        return <PrepPage />;
       case 'dashboard':
       default:
         return <DashboardPage />;

@@ -9,7 +9,7 @@ type Props = {
 
 export const BottomNav = ({ currentTab, onChange }: Props) => (
   <nav className="safe-bottom fixed bottom-0 left-0 right-0 z-20 border-t border-korea-line bg-korea-bg/95 backdrop-blur">
-    <div className="mx-auto grid w-full max-w-md grid-cols-6 gap-1 px-2 pt-2">
+    <div className="mx-auto grid w-full max-w-md grid-cols-4 gap-2 px-3 pt-2">
       {navigationItems.map((item) => {
         const isActive = currentTab === item.key;
         return (
@@ -18,7 +18,7 @@ export const BottomNav = ({ currentTab, onChange }: Props) => (
             type="button"
             onClick={() => onChange(item.key as AppTab)}
             className={classNames(
-              'flex flex-col items-center justify-center rounded-2xl py-2 text-[11px] font-medium transition duration-150 active:scale-95',
+              'flex flex-col items-center justify-center rounded-2xl py-2 text-xs font-medium transition duration-150 active:scale-95',
               isActive ? 'bg-korea-peachSoft text-korea-kimchi' : 'text-korea-muted'
             )}
           >
