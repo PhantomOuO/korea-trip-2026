@@ -1,17 +1,14 @@
 import { defineConfig } from 'vite';
-import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  plugins: [
-    laravel({
-      input: ['resources/css/app.css', 'resources/js/app.tsx'],
-      refresh: true
-    }),
-    react()
-  ],
+  plugins: [react()],
   server: {
-    host: '0.0.0.0',
+    host: true,
     port: 5173
+  },
+  build: {
+    outDir: 'public/build',
+    emptyOutDir: true
   }
 });
