@@ -1,4 +1,4 @@
-const VERSION = 'v1';
+const VERSION = 'v2';
 const APP_SHELL_CACHE = `korea-app-shell-${VERSION}`;
 const ASSET_CACHE = `korea-assets-${VERSION}`;
 const IMAGE_CACHE = `korea-images-${VERSION}`;
@@ -22,15 +22,43 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+const isHttpRequest = (url) => url.protocol === 'http:' || url.protocol === 'https:';
+
+const isCacheableAssetResponse = (request, response) => {
+  if (!response || !response.ok) {
+    return false;
+  }
+
+  const contentType = (response.headers.get('content-type') || '').toLowerCase();
+
+  if (request.destination === 'script') {
+    return (
+      contentType.includes('javascript') ||
+      contentType.includes('application/x-javascript') ||
+      request.url.includes('/build/assets/')
+    );
+  }
+
+  if (request.destination === 'style') {
+    return contentType.includes('text/css') || request.url.includes('/build/assets/');
+  }
+
+  return true;
+};
+
 const staleWhileRevalidate = async (request) => {
   const cache = await caches.open(ASSET_CACHE);
   const cached = await cache.match(request);
+
   const networkPromise = fetch(request)
     .then((response) => {
-      if (response && response.ok) cache.put(request, response.clone());
+      if (isCacheableAssetResponse(request, response)) {
+        cache.put(request, response.clone());
+      }
       return response;
     })
     .catch(() => cached);
+
   return cached || networkPromise;
 };
 
@@ -66,16 +94,15 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
 
   if (request.method !== 'GET') return;
+  if (!isHttpRequest(url)) return;
 
-  // 外部地圖連結不快取
-  if (url.hostname.includes('google.com') || url.hostname.includes('naver.com')) {
+  // 只處理同源資源，避免 chrome-extension:// 等非 http(s) 請求拋錯
+  if (url.origin !== self.location.origin) {
     return;
   }
 
   if (request.mode === 'navigate') {
-    event.respondWith(
-      caches.match(request).then((cached) => cached || fetch(request).catch(() => caches.match('/offline.html')))
-    );
+    event.respondWith(fetch(request).catch(() => caches.match('/offline.html')));
     return;
   }
 
