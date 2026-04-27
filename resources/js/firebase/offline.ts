@@ -1,0 +1,1 @@
+export { setupFirestoreOffline } from './firebase';

@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-korea-bg text-korea-ink font-sans antialiased;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(163, 142, 115, 0.12) 1px, transparent 0),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.12));
+    background-size: 18px 18px, 100% 100%;
+    min-height: 100dvh;
+  }
+
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  .safe-bottom {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+
+  .mobile-page {
+    @apply mx-auto w-full max-w-md px-4 pb-28 pt-4;
+  }
+
+  .korea-card {
+    @apply rounded-4xl border border-korea-line bg-korea-card shadow-soft;
+  }
+}
