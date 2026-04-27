@@ -1,0 +1,22 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isImage() {
+      return request.resource.contentType.matches('image/.*') && request.resource.size < 8 * 1024 * 1024;
+    }
+
+    function isPdf() {
+      return request.resource.contentType == 'application/pdf' && request.resource.size < 15 * 1024 * 1024;
+    }
+
+    // 第一版：限制固定旅程目錄，後續可加上 owner/editor/viewer 驗證
+    match /trips/korea-family-trip-2026/{allPaths=**} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && (isImage() || isPdf());
+    }
+  }
+}
